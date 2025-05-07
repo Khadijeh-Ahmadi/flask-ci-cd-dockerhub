@@ -1,29 +1,29 @@
 pipeline {
   agent any
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-  }
+
   stages {
-    stage('Cloner le dépôt') {
+    stage('Clone') {
       steps {
-        echo 'Clonage du dépôt terminé.'
+        echo ' Clonage du dépôt terminé.'
       }
     }
-    stage('Build de l\'image Docker') {
+
+    stage('Build Docker Image') {
       steps {
         script {
-          docker.build("${DOCKERHUB_CREDENTIALS_USR}/flask-ci-cd-dockerhub")
+          docker.build("khadijehahmadi/flask-ci-cd-test")
         }
       }
     }
-    stage('Push vers DockerHub') {
+    stage('Push to DockerHub') {
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-creds') {
-            docker.image("${DOCKERHUB_CREDENTIALS_USR}/flask-ci-cd-dockerhub").push()
-          }
-        }
-      }
+           docker.image("khadijehahmadi/flask-ci-cd-test").push()
+         }
+       }
+     }
     }
   }
 }
+
